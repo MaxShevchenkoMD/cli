@@ -6,7 +6,7 @@ import {
 import { FacesType, GetCircleElementIndexInterface } from './types';
 
 export class MatrixRotatorService {
-  getNextElementIndex(options: GetCircleElementIndexInterface): number {
+  protected getNextElementIndex(options: GetCircleElementIndexInterface): number {
     const { index, faces, matrixDimension } = options;
 
     let direction = 0;
@@ -22,7 +22,7 @@ export class MatrixRotatorService {
     return index + direction;
   }
 
-  detectFaces(offsetRow: number, offsetColumn: number, offsetMatrixDimension: number): FacesType {
+  protected detectFaces(offsetRow: number, offsetColumn: number, offsetMatrixDimension: number): FacesType {
     return {
       isTop: !offsetRow,
       isLeft: !offsetColumn,
@@ -31,7 +31,7 @@ export class MatrixRotatorService {
     };
   }
 
-  exec(array: number[]): number[] {
+  public exec(array: number[]): number[] {
     const matrixDimension = Math.sqrt(array.length);
 
     const result: number[] = [];
