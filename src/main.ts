@@ -35,10 +35,10 @@ class Parser {
 
     const array = JSON.parse(json);
 
-    return isValidSquareMatrix(array.length);
+    return Array.isArray(array) && isValidSquareMatrix(array.length);
   }
 
-  public parse() {
+  public exec() {
     const readableStream = createReadStream(this.csvFile);
     parseStream(readableStream)
       .on('error', this.onError.bind(this))
@@ -66,13 +66,17 @@ class Parser {
       return;
     }
 
-    const rotatedJsonArray = JSON.stringify(this.matrixRotator.exec(JSON.parse(json)));
-
-    this.formatter.write([id, rotatedJsonArray, true]);
+    this.writeValidRow(id, this.parse(json));
   }
 
   private onEnd(): void {
     this.formatter.end();
+  }
+
+  private parse(json: string): number[] {
+    const array = JSON.parse(json);
+
+    return array.length <= 1 ? array : this.matrixRotator.exec(array);
   }
 
   private writeInvalidRow(id: string) {
@@ -80,8 +84,12 @@ class Parser {
       this.formatter.write([id, JSON.stringify([]), false]);
     }
   }
+
+  private writeValidRow(id: string, array: number[]) {
+    this.formatter.write([id, JSON.stringify(array), true]);
+  }
 }
 
 const parser = new Parser(csvFilePath);
 
-parser.parse();
+parser.exec();
