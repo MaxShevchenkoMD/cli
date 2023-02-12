@@ -6,20 +6,32 @@ import {
 import { FacesType, GetCircleElementIndexInterface } from './types';
 
 export class MatrixRotatorService {
+  protected getTopStep(isLeft: boolean, matrixDimension: number) {
+    return isLeft ? matrixDimension : -1;
+  }
+
+  protected getBottomStep(isRight: boolean, matrixDimension: number) {
+    return isRight ? -matrixDimension : 1;
+  }
+
+  protected getSideStep(isLeft: boolean, matrixDimension: number) {
+    return isLeft ? matrixDimension : -matrixDimension;
+  }
+
   protected getNextElementIndex(options: GetCircleElementIndexInterface): number {
     const { index, faces, matrixDimension } = options;
 
-    let direction = 0;
+    let step = 0;
 
     if (faces.isTop) {
-      direction = faces.isLeft ? matrixDimension : -1;
+      step = this.getTopStep(faces.isLeft, matrixDimension);
     } else if (faces.isBottom) {
-      direction = faces.isRight ? -matrixDimension : 1;
+      step = this.getBottomStep(faces.isRight, matrixDimension);
     } else if (faces.isLeft || faces.isRight) {
-      direction = faces.isLeft ? matrixDimension : -matrixDimension;
+      step = this.getSideStep(faces.isLeft, matrixDimension);
     }
 
-    return index + direction;
+    return index + step;
   }
 
   protected detectFaces(offsetRow: number, offsetColumn: number, offsetMatrixDimension: number): FacesType {
@@ -33,7 +45,6 @@ export class MatrixRotatorService {
 
   public exec(array: number[]): number[] {
     const matrixDimension = Math.sqrt(array.length);
-
     const result: number[] = [];
 
     for (let i = 0; i < Math.floor(matrixDimension / 2); i++) {
