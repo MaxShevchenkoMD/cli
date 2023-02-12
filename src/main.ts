@@ -38,7 +38,7 @@ class Parser {
     return isValidSquareMatrix(array.length);
   }
 
-  parse() {
+  public parse() {
     const readableStream = createReadStream(this.csvFile);
     parseStream(readableStream)
       .on('error', this.onError.bind(this))
@@ -46,12 +46,12 @@ class Parser {
       .on('end', this.onEnd.bind(this));
   }
 
-  onError(error: Error): void {
+  private onError(error: Error): void {
     this.logger.error(error);
     process.exit(1);
   }
 
-  onData(row: string[]): void {
+  private onData(row: string[]): void {
     if (Parser.isFirstRow(row)) {
       this.formatter.write(outputHeaders);
 
@@ -71,7 +71,7 @@ class Parser {
     this.formatter.write([id, rotatedJsonArray, true]);
   }
 
-  onEnd(): void {
+  private onEnd(): void {
     this.formatter.end();
   }
 
