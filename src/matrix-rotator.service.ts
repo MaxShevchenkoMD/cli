@@ -1,5 +1,4 @@
 import {
-  getArrayIndexByMatrixPosition,
   getMatrixColumnByArrayIndex,
   getMatrixRowByArrayIndex,
   isPointOnBorder,

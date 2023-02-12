@@ -13,6 +13,3 @@ export const getMatrixRowByArrayIndex = (index: number, matrixDimension: number)
 
 export const getMatrixColumnByArrayIndex = (index: number, matrixDimension: number): number =>
   index % matrixDimension;
-
-export const getArrayIndexByMatrixPosition = (row: number, column: number, matrixDimension: number): number =>
-  row * matrixDimension + column;
